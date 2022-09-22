@@ -12,7 +12,7 @@ import java.net.URLConnection;
  * @date: 2021年11月03日 1:41 下午
  */
 public class ImageTest {
-    public static final String PIC_PATH = "https://www.manutouch.com.cn/wechat/resources/image/claim/example10.jpg";
+    public static final String PIC_PATH = "图片地址";
     //"https://mmbiz.qpic.cn/mmbiz_png/UHKG18j8iasZm2XZtyI3tl6fVGBK6FoQupicB2zOv0D7aokicV7L1J63vSdXr5xbIGdwiaYTW2Eaqbkjy6IDzXGtLw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1";
     //"https://mmbiz.qpic.cn/mmbiz_png/UHKG18j8iasZm2XZtyI3tl6fVGBK6FoQu8jvra9Q3mic9licwzpmqNjvYqeHJ1EdRJHzIqXQG8JEjuRK4wT9Ku5Qw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1";
 
