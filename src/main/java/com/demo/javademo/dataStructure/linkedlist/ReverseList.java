@@ -15,6 +15,16 @@ public class ReverseList {
 
         Node reverse = reverseList(n1);
         System.out.println(reverse.getData());
+        printAll(reverse);
+    }
+
+    public static void printAll(Node head) {
+        Node node = head.getNext();
+        while (node != null) {
+            System.out.print(node.getData() + ",");
+            node = node.getNext();
+        }
+        System.out.println();
     }
 
     public static Node reverseList(Node head) {

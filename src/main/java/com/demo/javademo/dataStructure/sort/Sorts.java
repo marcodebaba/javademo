@@ -3,103 +3,399 @@ package com.demo.javademo.dataStructure.sort;
 import java.util.Arrays;
 
 /**
- * 冒泡排序、插入排序、选择排序
- * <p>
- * Author: Zheng
+ * 冒泡，选择，插入，快速，归并
+ *
+ * @author ldb
+ * @date 2019-10-08 16:09
  */
 public class Sorts {
 
-    // 冒泡排序，a是数组，n表示数组大小
-    public static void bubbleSort(int[] a, int n) {
-        if (n <= 1) return;
-
-        for (int i = 0; i < a.length - 1; i++) {
-            boolean isSorted = true;
-            for (int j = 0; j < a.length - i - 1; j++) {
-                if (a[j] > a[j + 1]) {
-                    int tmp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = tmp;
-                    isSorted = false;
+    /**
+     * 冒泡排序
+     *
+     * @param arr
+     */
+    public static void bubbleSort(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
                 }
             }
-            if (isSorted) break;
         }
     }
 
     /**
-     * 冒泡排序改进:在每一轮排序后记录最后一次元素交换的位置,作为下次比较的边界,
-     * 对于边界外的元素在下次循环中无需比较.
-     */ 
-    public static void bubbleSort2(int[] a, int n) {
-        if (n <= 1) return;
-
-        // 最后一次交换的位置
-        int lastExchange = 0;
-        // 无序数据的边界,每次只需要比较到这里即可退出
-        int sortBorder = n - 1;
-        for (int i = 0; i < n; i++) {
-            // 提前退出标志位
-            boolean flag = false;
-            for (int j = 0; j < sortBorder; j++) {
-                if (a[j] > a[j + 1]) {
-                    int tmp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = tmp;
-                    // 此次冒泡有数据交换
-                    flag = true;
-                    // 更新最后一次交换的位置
-                    lastExchange = j;
+     * 优化冒泡排序
+     *
+     * @param arr
+     */
+    public static void bubbleSort2(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            boolean flag = true;
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    flag = false;
                 }
             }
-            sortBorder = lastExchange;
-            if (!flag) break;    // 没有数据交换，提前退出
+            if (flag) {
+                break;
+            }
         }
     }
 
-    // 插入排序，a表示数组，n表示数组大小
-    public static void insertionSort(int[] a, int n) {
-        if (n <= 1) return;
+    /**
+     * 插入排序
+     *
+     * @param array
+     */
+    public static void insertionSort(int[] array) {
+        if (array == null || array.length == 0)
+            throw new IllegalArgumentException("参数错误");
 
-        for (int i = 1; i < n; i++) {
-            int value = a[i];
+        for (int i = 1; i < array.length; i++) {
+            int value = array[i];
             int j = i - 1;
-            // 查找要插入的位置并移动数据
+            // 查找插入的位置
             for (; j >= 0; j--) {
-                if (a[j] > value) {
-                    a[j + 1] = a[j];
+                if (array[j] > value) {
+                    // 数据移动
+                    array[j + 1] = array[j];
                 } else {
                     break;
                 }
             }
-            a[j + 1] = value;
+            // 插入数据
+            array[j + 1] = value;
         }
     }
 
-    // 选择排序，a表示数组，n表示数组大小
-    public static void selectionSort(int[] a, int n) {
-        if (n <= 1) return;
+    /**
+     * 插入排序
+     *
+     * @param arr
+     * @param n   表示数组有用大小
+     */
+    public static void insertSort(int[] arr, int n) {
+        for (int i = 1; i < n; i++) {
+            int val = arr[i];
+            int index = i - 1;
+            while (index >= 0 && arr[index] > val) {
+                arr[index + 1] = arr[index];
+                index--;
+            }
+            arr[index + 1] = val;
+        }
+    }
 
-        for (int i = 0; i < n - 1; i++) {
-            // 查找最小值
+    /**
+     * 选择排序
+     *
+     * @param arr
+     */
+    public static void selectSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
             int minIndex = i;
-            for (int j = i + 1; j < n; j++) {
-                if (a[j] < a[minIndex]) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[minIndex] > arr[j]) {
                     minIndex = j;
                 }
             }
-
             // 交换
-            int tmp = a[i];
-            a[i] = a[minIndex];
-            a[minIndex] = tmp;
+            int temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
+        }
+    }
+
+    /**
+     * 归并排序
+     *
+     * @param arr
+     */
+    public static void mergeSort(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        int middle = (left + right) / 2;
+        mergeSort(arr, left, middle);
+        mergeSort(arr, middle + 1, right);
+        merge2(arr, left, middle, right);
+
+    }
+
+    private static void merge2(int[] arr, int left, int q, int right) {
+        int[] leftArr = new int[q - left + 2];
+        int[] rightArr = new int[right - q + 1];
+
+        for (int i = 0; i <= q - left; i++) {
+            leftArr[i] = arr[left + i];
+        }
+        // 第一个数组添加哨兵（最大值）
+        leftArr[q - left + 1] = Integer.MAX_VALUE;
+
+        for (int i = 0; i < right - q; i++) {
+            rightArr[i] = arr[q + 1 + i];
+        }
+        // 第二个数组添加哨兵（最大值）
+        rightArr[right - q] = Integer.MAX_VALUE;
+
+        int i = 0;
+        int j = 0;
+        int k = left;
+        while (k <= right) {
+            // 当左边数组到达哨兵值时，i不再增加，直到右边数组读取完剩余值，同理右边数组也一样
+            if (leftArr[i] <= rightArr[j]) {
+                arr[k++] = leftArr[i++];
+            } else {
+                arr[k++] = rightArr[j++];
+            }
+        }
+    }
+
+    private static void merge(int[] arr, int left, int q, int right) {
+        int i = left;
+        int j = q + 1;
+        int k = 0;
+        int[] tmp = new int[right - left + 1];
+        while (i <= q && j <= right) {
+            if (arr[i] <= arr[j]) {
+                tmp[k++] = arr[i++];
+            } else {
+                tmp[k++] = arr[j++];
+            }
+        }
+        int start = i;
+        int end = q;
+        if (j <= right) {
+            start = j;
+            end = right;
+        }
+        while (start <= end) {
+            tmp[k++] = arr[start++];
+        }
+        for (int l = 0; l <= right - left; l++) {
+            arr[l + left] = tmp[l];
+        }
+
+    }
+
+    /**
+     * 快速排序
+     *
+     * @param arr
+     */
+    public static void quickSort(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        int q = partition2(arr, left, right);
+        quickSort(arr, left, q - 1);
+        quickSort(arr, q + 1, right);
+    }
+
+    private static int partition(int[] arr, int left, int right) {
+        int pivot = arr[right];
+        int i = left;
+        for (int j = left; j < right; j++) {
+            if (arr[j] < pivot) {
+                if (i == j) {
+                    ++i;
+                } else {
+                    int tmp = arr[i];
+                    arr[i++] = arr[j];
+                    arr[j] = tmp;
+                }
+            }
+        }
+        int tmp = arr[i];
+        arr[i] = arr[right];
+        arr[right] = tmp;
+        return i;
+    }
+
+    private static int partition2(int[] arr, int left, int right) {
+        // 三数取中法 , 随机数在这里写
+        int middle = (left + right) / 2;
+        int pivot = arr[middle];
+        // 交换到最右边
+        int val = arr[right];
+        arr[right] = pivot;
+        arr[middle] = val;
+        int i = left;
+        for (int j = left; j < right; j++) {
+            if (arr[j] < pivot) {
+                if (i == j) {
+                    ++i;
+                } else {
+                    int tmp = arr[i];
+                    arr[i++] = arr[j];
+                    arr[j] = tmp;
+                }
+            }
+        }
+        int tmp = arr[i];
+        arr[i] = arr[right];
+        arr[right] = tmp;
+        return i;
+    }
+
+    /**
+     * 三向切分快速排序
+     *
+     * @param arr
+     * @param left
+     * @param right
+     * @return
+     */
+    private static void quickSort3(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        int l = left;
+        int k = left + 1;
+        int r = right;
+        int pivot = arr[l];
+
+        while (k <= r) {
+            if (arr[k] < pivot) {
+                int tmp = arr[l];
+                arr[l] = arr[k];
+                arr[k] = tmp;
+                l++;
+                k++;
+            } else if (arr[k] == pivot) {
+                k++;
+            } else {
+                if (arr[r] > pivot) {
+                    r--;
+                } else if (arr[r] == pivot) {
+                    int tmp = arr[k];
+                    arr[k] = arr[r];
+                    arr[r] = tmp;
+                    k++;
+                    r--;
+                } else {
+                    int tmp = arr[l];
+                    arr[l] = arr[r];
+                    arr[r] = arr[k];
+                    arr[k] = tmp;
+                    l++;
+                    k++;
+                    r--;
+                }
+            }
+        }
+
+        quickSort(arr, left, l - 1);
+        quickSort(arr, r + 1, right);
+    }
+
+    /**
+     * 双轴快速排序
+     *
+     * @param arr
+     * @param left
+     * @param right
+     */
+    private static void quickSort4(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        int l = left;
+        int k = left + 1;
+        int r = right;
+        // 判断pivot1 与 pivot2 大小
+        if (arr[l] > arr[r]) {
+            int tmp = arr[l];
+            arr[l] = arr[r];
+            arr[r] = tmp;
+        }
+        int pivot1 = arr[l];
+        int pivot2 = arr[r];
+
+        while (k < r) {
+            if (arr[k] < pivot1) {
+                l++;
+                if (l != k) {
+                    int tmp = arr[l];
+                    arr[l] = arr[k];
+                    arr[k] = tmp;
+                }
+                k++;
+            } else if (arr[k] >= pivot1 && arr[k] <= pivot2) {
+                k++;
+            } else {
+                --r;
+                if (arr[r] > pivot2) {
+                } else if (arr[r] >= pivot1 && arr[r] <= pivot2) {
+                    int tmp = arr[k];
+                    arr[k] = arr[r];
+                    arr[r] = tmp;
+                    k++;
+                } else {
+                    l++;
+                    int tmp = arr[l];
+                    arr[l] = arr[r];
+                    arr[r] = arr[k];
+                    arr[k] = tmp;
+                    k++;
+                }
+            }
+        }
+
+        // 交换pivot1 和 pivot2
+        arr[left] = arr[l];
+        arr[l] = pivot1;
+        arr[right] = arr[r];
+        arr[r] = pivot2;
+
+        quickSort(arr, left, l - 1);
+        quickSort(arr, l + 1, r - 1);
+        quickSort(arr, r + 1, right);
+    }
+
+    /**
+     * O(n)  时间复杂度内求无序数组中的第 K  大元素。比如， 4 ， 2 ， 5 ， 12 ， 3  这样一组数据，第 3  大元素就是 4 。
+     *
+     * @param arr
+     */
+    public static int sort(int[] arr, int l, int r, int k) {
+        if (l >= r) {
+            return 0;
+        }
+        int p = partition(arr, l, r);
+        if ((p + 1) == k) {
+            return arr[p];
+        } else if ((p + 1) < k) {
+            return sort(arr, p + 1, r, k);
+        } else {
+            return sort(arr, l, p - 1, k);
         }
     }
 
     public static void main(String[] args) {
-        int[] array = new int[]{3, 4, 2, 1, 5, 6, 7, 8};
-        //bubbleSort2(array, array.length);
-        selectionSort(array, array.length);
-        System.out.println(Arrays.toString(array));
+        int[] arr = {2, 1, 5, 6, 8, 4, 12, 11, 13, 15, 7, 9, 0, -1};
+//        bubbleSort(arr);
+//        bubbleSort2(arr);
+//        selectSort(arr);
+//        mergeSort(arr, 0, arr.length - 1);
+//        quickSort4(arr, 0, arr.length - 1);
+
+        Arrays.sort(arr);
+        print(arr);
+
+    }
+
+    public static void print(int[] arr) {
+        for (int i : arr) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
     }
 }

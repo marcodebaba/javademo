@@ -1,6 +1,5 @@
 package com.demo.javademo.dataStructure.linkedlist;
 
-
 import java.util.Scanner;
 
 /**
@@ -37,26 +36,18 @@ public class LRUBaseLinkedList<T> {
         this.length = 0;
     }
 
-    public LRUBaseLinkedList(Integer capacity) {
-        this.headNode = new Node<>();
-        this.capacity = capacity;
-        this.length = 0;
-    }
-
     public void add(T data) {
         Node preNode = findPreNode(data);
-
         // 链表中存在，删除原数据，再插入到链表的头部
         if (preNode != null) {
             deleteElemOptim(preNode);
-            intsertElemAtBegin(data);
         } else {
             if (length >= this.capacity) {
                 //删除尾结点
                 deleteElemAtEnd();
             }
-            intsertElemAtBegin(data);
         }
+        intsertElemAtBegin(data);
     }
 
     /**

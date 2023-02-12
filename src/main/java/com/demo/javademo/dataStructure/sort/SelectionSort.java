@@ -5,8 +5,7 @@ import java.util.Arrays;
 /**
  * @author：marco.pan
  * @ClassName：SelectionSort
- * @Description：选择排序
- * 选择排序算法的实现思路有点类似插入排序，也分已排序区间和未排序区间。
+ * @Description：选择排序 选择排序算法的实现思路有点类似插入排序，也分已排序区间和未排序区间。
  * 但是选择排序每次会从未排序区间中找到最小的元素，将其放到已排序区间的末尾。
  * @date: 2022年04月10日 12:26 上午
  */
@@ -33,7 +32,6 @@ public class SelectionSort {
 
     public static void main(String[] args) {
         int[] array = new int[]{3, 4, 2, 1, 5, 6, 7, 8};
-        //bubbleSort2(array, array.length);
         selectionSort(array, array.length);
         System.out.println(Arrays.toString(array));
     }

@@ -40,6 +40,7 @@ public class FutureThenRunTest {
             log.info("接着执行第二个任务");
         });
         log.info("orgFuture.get: {}", orgFuture.join());
+        while (!thenRunFuture.isDone());
         log.info("thenRunFuture.get: {}", thenRunFuture.get());
     }
 }

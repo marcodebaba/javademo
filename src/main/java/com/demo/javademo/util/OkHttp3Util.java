@@ -1,8 +1,10 @@
 package com.demo.javademo.util;
 
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -12,6 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @Description: OkHttp3工具类
  * @date: 2022年01月18日 10:48 上午
  */
+@Slf4j
 public class OkHttp3Util {
     public static final MediaType jsonMediaType = MediaType.parse("application/json;charset=utf-8");
 
@@ -42,7 +45,7 @@ public class OkHttp3Util {
         }
     }
 
-    //Get
+    //GetOkHttp3Util
     public static String sendByGetUrl(String url) {
         try {
             Request request = new Request.Builder().url(url).build();
@@ -58,7 +61,6 @@ public class OkHttp3Util {
         }
         return null;
     }
-
 
     /**
      * post-form
@@ -94,6 +96,7 @@ public class OkHttp3Util {
 
             Response response = OkHttp3Util.getInstance().newCall(request).execute();
             if (response.isSuccessful()) {
+                assert response.body() != null;
                 String content = response.body().string();
                 if (StringUtils.isNotBlank(content)) {
                     return content;

@@ -45,7 +45,7 @@ public class LRULinkedList {
             newNode.key = key;
             newNode.value = value;
             this.cache.put(key, newNode);
-            this.addNode(newNode);
+            this.addNodeToHead(newNode);
             ++count;
             if (count > capacity) {
                 // pop the tail
@@ -62,11 +62,11 @@ public class LRULinkedList {
     // 将结点移动到头结点
     private void moveToFirst(LruNode node) {
         this.removeNode(node);
-        this.addNode(node);
+        this.addNodeToHead(node);
     }
 
     // 加入头结点
-    private void addNode(LruNode node) {
+    private void addNodeToHead(LruNode node) {
         node.pre = head;
         node.next = head.next;
         head.next.pre = node;

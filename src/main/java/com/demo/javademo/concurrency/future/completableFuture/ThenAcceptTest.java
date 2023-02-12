@@ -1,11 +1,14 @@
 package com.demo.javademo.concurrency.future.completableFuture;
 
+import io.netty.util.concurrent.CompleteFuture;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * @author：marco.pan
@@ -18,35 +21,59 @@ import java.util.function.Consumer;
  */
 @Slf4j
 public class ThenAcceptTest {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-        log.info("FutureThenAcceptTest start");
+    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
+        // 不带返回
+//        CompletableFuture<Void> completableFuture = CompletableFuture.supplyAsync(() -> {
+//            try {
+//                TimeUnit.SECONDS.sleep(3);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            return "Hello World";
+//        }).thenAcceptAsync(rs -> System.out.println(rs));
+//        System.out.println("main end");
+//        while (!completableFuture.isDone());
 
-        CompletableFuture<String> orgFuture = CompletableFuture.supplyAsync(
-                () -> {
-                    try {
-                        TimeUnit.SECONDS.sleep(2);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    log.info("原始CompletableFuture方法任务");
-                    return "捡田螺的小男孩";
-                }
-        );
+//        CompletableFuture<String> task1 = CompletableFuture.supplyAsync(() -> "task1");
+//        CompletableFuture<String> task2 = CompletableFuture.supplyAsync(() -> "task2");
+//        CompletableFuture<Void> future = task1.thenAcceptBoth(task2, (result1, result2) -> System.out.println(result1 + ", " + result2));
+//        future.get();
 
-        CompletableFuture<Void> thenAcceptFuture = orgFuture.thenAccept(new Consumer<String>() {
-            @Override
-            public void accept(String result) {
-                try {
-                    TimeUnit.SECONDS.sleep(3);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if ("捡田螺的小男孩".equals(result)) {
-                    log.info("关注了{}", result);
-                }
-            }
-        });
-        log.info("thenAcceptFuture.get: {}", thenAcceptFuture.get());
+        // 带返回
+        CompletableFuture<String> applyFuture = CompletableFuture.supplyAsync(() -> "Apply")
+                .thenApply(result -> result + ", Mic");
+        System.out.println(applyFuture.get());
+
+        CompletableFuture<String> combineFuture = CompletableFuture.supplyAsync(() -> "combine")
+                .thenCombineAsync(CompletableFuture.supplyAsync(() -> " message"),
+                        (result1, result2) -> result1 + result2);
+        System.out.println(combineFuture.get());
+
+//        log.info("FutureThenAcceptTest start");
+//
+//        CompletableFuture<String> orgFuture = CompletableFuture.supplyAsync(
+//                () -> {
+//                    try {
+//                        TimeUnit.SECONDS.sleep(2);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    log.info("原始CompletableFuture方法任务");
+//                    return "捡田螺的小男孩";
+//                }
+//        );
+//
+//        CompletableFuture<Void> thenAcceptFuture = orgFuture.thenAccept(result -> {
+//            try {
+//                TimeUnit.SECONDS.sleep(3);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            if ("捡田螺的小男孩".equals(result)) {
+//                log.info("关注了{}", result);
+//            }
+//        });
+//        log.info("thenAcceptFuture.get: {}", thenAcceptFuture.get());
 
 //        CompletableFuture<Void> thenAcceptFuture = orgFuture.thenAccept((result) -> {
 //            try {

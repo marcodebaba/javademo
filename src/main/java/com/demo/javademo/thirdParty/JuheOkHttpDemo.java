@@ -3,22 +3,18 @@ package com.demo.javademo.thirdParty;
 import com.demo.javademo.util.OkHttp3Util;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.security.acl.LastOwnerException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 public class JuheOkHttpDemo {
-    //配置您申请的KEY
-    public static final String APPKEY = "3cf2b7d030964697b52610cefe24b954";
-    //请求接口地址
-    private static final String REQUEST_URL = "http://op.juhe.cn/onebox/weather/query";
+    // 天气情况查询接口地址
+    public static String API_URL = "http://apis.juhe.cn/simpleWeather/query";
+    // 接口请求Key
+    public static String API_KEY = "3cf2b7d030964697b52610cefe24b954";
 
     public static void main(String[] args) throws IOException {
         JuheOkHttpDemo example = new JuheOkHttpDemo();
@@ -27,20 +23,29 @@ public class JuheOkHttpDemo {
 
     //1.根据城市查询天气
     public void doRequestCityWeather() {
-        Map params = new HashMap();//请求参数
-        params.put("cityname", "上海");//要查询的城市，如：温州、上海、北京
-        params.put("key", APPKEY);//应用APPKEY(应用详细页查询)
-        params.put("dtype", "");//返回数据的格式,xml或json，默认json
+        Map<String, Object> params = new HashMap<>();//组合参数
+        params.put("city", "上海");
+        params.put("key", API_KEY);
 
-//        log.info("result = {}", OkHttp3Util.postForm(REQUEST_URL, params));
-
+        String response = getResultByUrl(API_URL, params, null);
         try {
-            String result = this.getResultByUrl(REQUEST_URL, params, "GET");
-            JSONObject object = JSONObject.fromObject(result);
-            if (object.getInt("error_code") == 0) {
-                log.info("weather result {}", object.get("result"));
+            JSONObject jsonObject = JSONObject.fromObject(response);
+            int error_code = jsonObject.getInt("error_code");
+            if (error_code == 0) {
+                System.out.println("调用接口成功");
+
+                JSONObject result = jsonObject.getJSONObject("result");
+                JSONObject realtime = result.getJSONObject("realtime");
+
+                System.out.printf("城市：%s%n", result.getString("city"));
+                System.out.printf("天气：%s%n", realtime.getString("info"));
+                System.out.printf("温度：%s%n", realtime.getString("temperature"));
+                System.out.printf("湿度：%s%n", realtime.getString("humidity"));
+                System.out.printf("风向：%s%n", realtime.getString("direct"));
+                System.out.printf("风力：%s%n", realtime.getString("power"));
+                System.out.printf("空气质量：%s%n", realtime.getString("aqi"));
             } else {
-                log.info(object.get("error_code") + ":" + object.get("reason"));
+                System.out.println("调用接口失败：" + jsonObject.getString("reason"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,7 +68,7 @@ public class JuheOkHttpDemo {
     }
 
     //将map型转为请求参数型
-    public static String urlencode(Map<String, String> data) {
+    public static String urlencode(Map<String, Object> data) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry entry : data.entrySet()) {
             try {

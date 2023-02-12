@@ -1,5 +1,8 @@
 package com.demo.javademo.dataStructure.linkedlist;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 1) 单链表反转
  * 2) 链表中环的检测
@@ -122,9 +125,8 @@ public class LinkedListAlgo {
     public static Node deleteLastKth(Node list, int k) {
         Node fast = list;
         int i = 1;
-        while (fast != null && i < k) {
+        while (fast != null && i++ < k) {
             fast = fast.next;
-            ++i;
         }
 
         if (fast == null) return list;
@@ -142,6 +144,12 @@ public class LinkedListAlgo {
         } else {
             prev.next = prev.next.next;
         }
+        
+        Set set = new HashSet<>();
+        for (Object o : set) {
+            
+        }
+        
         return list;
     }
 
@@ -151,13 +159,35 @@ public class LinkedListAlgo {
 
         Node fast = list;
         Node slow = list;
-
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
         }
 
         return slow;
+    }
+
+    // 删除有序链表重复结点
+    public static Node deleteDumplicates(Node head) {
+        if (head == null) return null;
+
+        Node dummyNode = new Node(-100, head);
+        Node preview = dummyNode;
+        Node current = head;
+        while (current != null && current.next != null) {
+            if (current.data == current.next.data) {
+                int data = current.data;
+                while (current != null && current.next.data == data) {
+                    current = current.next;
+                }
+                preview.next = current;
+            } else {
+                preview = current;
+                current = current.next;
+            }
+        }
+
+        return dummyNode.next;
     }
 
     public static void printAll(Node list) {

@@ -12,7 +12,7 @@ public class BucketSort {
     /**
      * 桶排序
      *
-     * @param arr 数组
+     * @param arr        数组
      * @param bucketSize 桶容量
      */
     public static void bucketSort(int[] arr, int bucketSize) {

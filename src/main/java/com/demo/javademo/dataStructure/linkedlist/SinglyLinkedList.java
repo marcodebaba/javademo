@@ -197,13 +197,12 @@ public class SinglyLinkedList {
            return false;
         }*/
     }
-    //　判断是否为回文 
 
+    //　判断是否为回文，int data[] = {1,2,5,2,1};
     public boolean palindrome() {
         if (head == null) {
             return false;
         } else {
-            System.out.println("开始执行找到中间节点");
             Node p = head;
             Node q = head;
             if (p.next == null) {
@@ -213,7 +212,6 @@ public class SinglyLinkedList {
             while (q.next != null && q.next.next != null) {
                 p = p.next;
                 q = q.next.next;
-
             }
 
             System.out.println("中间节点" + p.data);
@@ -221,12 +219,11 @@ public class SinglyLinkedList {
             Node leftLink = null;
             Node rightLink = null;
             if (q.next == null) {
-                //　p 一定为整个链表的中点，且节点数目为奇数
+                //p 一定为整个链表的中点，且节点数目为奇数
                 rightLink = p.next;
                 leftLink = inverseLinkList(p).next;
                 System.out.println("左边第一个节点" + leftLink.data);
                 System.out.println("右边第一个节点" + rightLink.data);
-
             } else {
                 //p q　均为中点
                 rightLink = p.next;
@@ -240,42 +237,37 @@ public class SinglyLinkedList {
     //带结点的链表翻转
     public Node inverseLinkList_head(Node p) {
         //　Head　为新建的一个头结点
-        Node Head = new Node(9999, null);
+        Node head = new Node(9999, null);
         // p　为原来整个链表的头结点,现在Head指向　整个链表
-        Head.next = p;
+        head.next = p;
         /*
         带头结点的链表翻转等价于
         从第二个元素开始重新头插法建立链表
         */
-        Node Cur = p.next;
+        Node cur = p.next;
         p.next = null;
         Node next = null;
 
-        while (Cur != null) {
-            next = Cur.next;
-            Cur.next = Head.next;
-            Head.next = Cur;
-            System.out.println("first " + Head.data);
+        while (cur != null) {
+            next = cur.next;
+            cur.next = head.next;
+            head.next = cur;
+            System.out.println("first " + head.data);
 
-            Cur = next;
+            cur = next;
         }
 
         //　返回左半部分的中点之前的那个节点
         //　从此处开始同步像两边比较
-        return Head;
-
+        return head;
     }
 
     //无头结点的链表翻转
     public Node inverseLinkList(Node p) {
-
         Node pre = null;
         Node r = head;
-        System.out.println("z---" + r.data);
-        Node next = null;
         while (r != p) {
-            next = r.next;
-
+            Node next = r.next;
             r.next = pre;
             pre = r;
             r = next;
@@ -285,7 +277,6 @@ public class SinglyLinkedList {
         //　返回左半部分的中点之前的那个节点
         //　从此处开始同步像两边比较
         return r;
-
     }
 
     public static Node createNode(int value) {
@@ -315,8 +306,8 @@ public class SinglyLinkedList {
         //int data[] = {1,2,3,1};
         //int data[] = {1,2,5};
         //int data[] = {1,2,2,1};
-        // int data[] = {1,2,5,2,1};
-        int data[] = {1, 2, 5, 3, 1};
+        int data[] = {1,2,5,2,1};
+        //int data[] = {1, 2, 5, 3, 1};
 
         for (int i = 0; i < data.length; i++) {
             //link.insertToHead(data[i]);

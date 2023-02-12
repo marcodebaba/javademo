@@ -10,6 +10,11 @@ import java.util.Stack;
  * 1. 分解：从数列中选出一个元素作为基准元素。以基准元素为基础，将问题分解为两个子序列，使小于等于基准元素的子序列在左侧，大于基准元素的子序列在右侧
  * 2. 治理：对两个子序列进行快速排序
  * 3. 合并：将排好序的两个子序列合并，得到原问题的解
+ *
+ *
+ * 快排的思想是这样的：如果要排序数组中下标从 p 到 r 之间的一组数据，我们选择 p 到 r 之间的任意一个数据作为 pivot（分区点）。
+ * 我们遍历 p 到 r 之间的数据，将小于 pivot 的放到左边，将大于 pivot 的放到右边，将 pivot 放到中间。经过这一步骤之后，
+ * 数组 p 到 r 之间的数据就被分成了三个部分，前面 p 到 q-1 之间都是小于 pivot 的，中间是 pivot，后面的 q+1 到 r 之间是大于 pivot 的。
  */
 public class QuickSort {
     /**
@@ -31,60 +36,46 @@ public class QuickSort {
     /**
      * 非递归算法
      *
-     * @param array
-     * @param low
-     * @param high
+     * @param arr
+     * @param left
+     * @param right
      */
-    public static void quickSort(int[] array, int low, int high) {
-        Stack<Map<String, Integer>> stack = new Stack<>();
-        Map<String, Integer> rootParam = new HashMap<>();
-        rootParam.put("low", low);
-        rootParam.put("high", high);
-        stack.push(rootParam);
-
-        while (!stack.isEmpty()) {
-            Map<String, Integer> param = stack.pop();
-            int pivotIndex = partition2(array, param.get("low"), param.get("high"));
-            if (param.get("low") < pivotIndex - 1) {
-                Map<String, Integer> leftParam = new HashMap<>();
-                leftParam.put("low", param.get("low"));
-                leftParam.put("high", pivotIndex - 1);
-                stack.push(leftParam);
-            }
-            if (param.get("high") > pivotIndex + 1) {
-                Map<String, Integer> rightParam = new HashMap<>();
-                rightParam.put("low", pivotIndex + 1);
-                rightParam.put("high", param.get("high"));
-                stack.push(rightParam);
-            }
+    public static void quickSort(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
         }
+        int q = partition(arr, left, right);
+        quickSort(arr, left, q - 1);
+        quickSort(arr, q + 1, right);
     }
 
-    private static int partition(int[] array, int low, int high) {
-        int i = low, j = high, pivot = array[low];
-        while (i < j) {
-            // 从右往左扫描，找小于等于pivot的数，如果找到，array[i]和array[j]交换，i++
-            while (i < j && array[j] > pivot) {
-                j--;
-            }
-            if (i < j) {
-                int temp = array[j];
-                array[j] = array[i];
-                array[i++] = temp;
-            }
-            // 从左往右扫描，找到大于pivot的数，如果找到，array[i]和array[j]交换，j--
-            while (i < j && array[i] <= pivot) {
-                i++;
-            }
-            if (i < j) {
-                int temp = array[j];
-                array[j--] = array[i];
-                array[i] = temp;
+    private static int partition(int[] arr, int left, int right) {
+        int pivot = arr[right];
+        int i = left;
+        for (int j = left; j < right; j++) {
+            if (arr[j] < pivot) {
+                if (i == j) {
+                    ++i;
+                } else {
+                    int tmp = arr[i];
+                    arr[i++] = arr[j];
+                    arr[j] = tmp;
+                }
             }
         }
+        int tmp = arr[i];
+        arr[i] = arr[right];
+        arr[right] = tmp;
         return i;
     }
 
+    /**
+     * 随机选择一个元素作为 pivot（一般情况下，可以选择 p 到 r 区间的最后一个元素），然后对 A[p...r]分区，函数返回 pivot 的下标。
+     * @param array
+     * @param low
+     * @param high
+     * @return
+     */
     public static int partition2(int[] array, int low, int high) {
         int i = low, j = high, pivot = array[low];
         while (i < j) {
