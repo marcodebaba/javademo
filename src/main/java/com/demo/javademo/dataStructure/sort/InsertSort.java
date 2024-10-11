@@ -12,11 +12,11 @@ public class InsertSort {
             throw new IllegalArgumentException("参数错误");
 
         for (int i = 1; i < array.length; i++) {
-            int value = array[i];
+            int insertValue = array[i];
             int j = i - 1;
             // 查找插入的位置
             for (; j >= 0; j--) {
-                if (array[j] > value) {
+                if (array[j] > insertValue) {
                     // 数据移动
                     array[j + 1] = array[j];
                 } else {
@@ -24,7 +24,7 @@ public class InsertSort {
                 }
             }
             // 插入数据
-            array[j + 1] = value;
+            array[j + 1] = insertValue;
         }
     }
 

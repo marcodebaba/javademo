@@ -2,6 +2,7 @@ package com.demo.javademo.concurrency.sychronizedTools;
 
 import java.util.concurrent.CyclicBarrier;
 
+// CyclicBarrier 是共享锁
 public class CyclicBarrierTest {
     private static CyclicBarrier cyclicBarrier;
 

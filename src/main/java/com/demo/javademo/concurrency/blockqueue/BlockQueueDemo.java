@@ -1,10 +1,13 @@
 package com.demo.javademo.concurrency.blockqueue;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.LinkedList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+@Slf4j
 public class BlockQueueDemo<E> {
     private int count;
     private LinkedList<E> items = new LinkedList<>();
@@ -47,11 +50,12 @@ public class BlockQueueDemo<E> {
         try {
             // 队列满了，入队阻塞
             while (items.size() == count) {
+                log.info("阻塞队列满了");
                 notFull.await();
             }
             // 否则将元素入队
             items.add(e);
-            System.out.println(e + "元素入队了");
+            log.info(e + "元素入队了");
 
             // 通知可以取元素了
             notEmpty.signal();
@@ -73,11 +77,12 @@ public class BlockQueueDemo<E> {
         try {
             // 队列空，出队阻塞
             while (items.isEmpty()) {
+                log.info("阻塞队列空了");
                 notEmpty.await();
             }
             // 否则将元素出队
             element = items.removeFirst();
-            System.out.println(element + "元素出列了");
+            log.info(element + "元素出列了");
 
             // 通知可以取元素了
             notFull.signal();

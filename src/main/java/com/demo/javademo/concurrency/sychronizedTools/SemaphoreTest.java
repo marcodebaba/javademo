@@ -37,7 +37,7 @@ public class SemaphoreTest {
                 } else {
                     System.out.println(name + "怎么没有茅坑了...");
                 }
-                //申请茅坑，如果资源达到3次就等待
+                // 申请茅坑，如果资源达到3次就等待
                 // 申请令牌，拿到令牌就可以往下跑
                 toilet.acquire();
                 System.out.println(name + "终于轮我上厕所了..爽啊");

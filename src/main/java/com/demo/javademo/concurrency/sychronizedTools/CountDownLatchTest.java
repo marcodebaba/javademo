@@ -3,7 +3,7 @@ package com.demo.javademo.concurrency.sychronizedTools;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * CountDownLatch 是共享锁
+ * CountDownLatch 是共享锁，允许多个线程同时抢占到锁，等到计数器归零时，同时唤醒
  */
 public class CountDownLatchTest {
     private static CountDownLatch countDownLatch = new CountDownLatch(5);
