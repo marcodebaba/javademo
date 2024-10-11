@@ -11,13 +11,13 @@ import java.util.Arrays;
  */
 public class SelectionSort {
     // 选择排序，a表示数组，n表示数组大小
-    public static void selectionSort(int[] a, int n) {
-        if (n <= 1) return;
+    public static void selectionSort(int[] a) {
+        if (a.length <= 1) return;
 
-        for (int i = 0; i < n - 1; i++) {
+        for (int i = 0; i < a.length - 1; i++) {
             // 查找最小值
             int minIndex = i;
-            for (int j = i + 1; j < n; j++) {
+            for (int j = i + 1; j < a.length; j++) {
                 if (a[j] < a[minIndex]) {
                     minIndex = j;
                 }
@@ -32,7 +32,7 @@ public class SelectionSort {
 
     public static void main(String[] args) {
         int[] array = new int[]{3, 4, 2, 1, 5, 6, 7, 8};
-        selectionSort(array, array.length);
+        selectionSort(array);
         System.out.println(Arrays.toString(array));
     }
 }
