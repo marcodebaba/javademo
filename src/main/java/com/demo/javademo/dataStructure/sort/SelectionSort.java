@@ -14,8 +14,8 @@ public class SelectionSort {
     public static void selectionSort(int[] a) {
         if (a.length <= 1) return;
 
-        for (int i = 0; i < a.length - 1; i++) {
-            // 查找最小值
+        for (int i = 0; i < a.length; i++) {
+            // 查找最小值，minIndex就是最小值的下标
             int minIndex = i;
             for (int j = i + 1; j < a.length; j++) {
                 if (a[j] < a[minIndex]) {
@@ -23,10 +23,12 @@ public class SelectionSort {
                 }
             }
 
-            // 交换
-            int tmp = a[i];
-            a[i] = a[minIndex];
-            a[minIndex] = tmp;
+            if (minIndex != i) {
+                // 交换
+                int tmp = a[i];
+                a[i] = a[minIndex];
+                a[minIndex] = tmp;
+            }
         }
     }
 
